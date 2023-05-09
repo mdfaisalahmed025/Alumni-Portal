@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { University } from "./university.entities";
+import { Post } from "./Post.entity";
 
 @Entity()
 export class Alumni {
@@ -12,4 +14,17 @@ export class Alumni {
     Email: string
     @Column()
     Password: string
+    @Column()
+    StudentId: string
+    @Column()
+    PhoneNUmber: string
+    @Column()
+    Department: string
+    @Column()
+    EducationStatus: string
+    @OneToOne(() => University, (university) => university.alumni)
+    university: University
+    // @OneToMany(() => Post, (post) => post.alumni)
+    // post: Post[]
+
 }

@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, Post } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlumniModule } from './alumni/alumni.module';
 import { Alumni } from './alumni/entities/alumnus.entity';
+import { University } from './alumni/entities/university.entities';
 
 @Module({
   imports: [
@@ -17,7 +18,9 @@ import { Alumni } from './alumni/entities/alumnus.entity';
       autoLoadEntities: true,
       synchronize: true,
       entities: [
-        Alumni
+        Alumni,
+        University,
+        Post
       ],
 
     }),
