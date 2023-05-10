@@ -1,16 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, HttpStatus } from '@nestjs/common';
 import { AlumniService } from './alumni.service';
 import { CreateAlumnusDto } from './dto/create-alumnus.dto';
 import { UpdateAlumnusDto } from './dto/update-alumnus.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Alumni } from './entities/alumnus.entity';
+import { Repository } from 'typeorm';
+import { Request, Response } from 'express';
 
 @Controller('alumni')
 export class AlumniController {
-  constructor(private readonly alumniService: AlumniService) {}
+  constructor(@InjectRepository(Alumni) private alumniRepository: Repository<Alumni>,
+    private readonly alumniService: AlumniService) { }
 
-  @Post()
-  create(@Body() createAlumnusDto: CreateAlumnusDto) {
-    return this.alumniService.create(createAlumnusDto);
+  @Post('registration')
+  async AlumniRegistartion(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body
+  ) {
+
+    const { FirstName, LastName, StudentId, Department, EducationStatus, Password, PhoneNUmber, Email } = req.body
+    const registration = new Alumni()
+    registration.FirstName = FirstName
+    registration.LastName = LastName
+    registration.Email = Email
+    registration.Password = Password
+    registration.PhoneNUmber = PhoneNUmber
+    registration.StudentId = StudentId
+    registration.Department = Department
+    registration.EducationStatus = EducationStatus
+    await this.alumniRepository.save({...registration})
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'user register successfully' });
+
+
   }
+
 
   @Get()
   findAll() {
