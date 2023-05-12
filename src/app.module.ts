@@ -8,6 +8,8 @@ import { University } from './alumni/entities/university.entities';
 import { Post } from './alumni/entities/Post.entity';
 import { Adress } from './alumni/entities/address.enity';
 import { Job } from './alumni/entities/job.entity';
+import { AdminModule } from './admin/admin.module';
+import { Admin } from 'typeorm';
 
 @Module({
   imports: [
@@ -19,8 +21,9 @@ import { Job } from './alumni/entities/job.entity';
       database: 'alumniportal',
       port: 3306,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize:true,
       entities: [
+        Admin,
         Alumni,
         University,
         Post,
@@ -31,6 +34,7 @@ import { Job } from './alumni/entities/job.entity';
 
     }),
     AlumniModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

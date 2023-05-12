@@ -37,7 +37,7 @@ export class Alumni {
     @Column()
     StudentId: string
     @Column()
-    PhoneNUmber: string
+    PhoneNumber: string
     @Column()
     Department: string
     @Column()

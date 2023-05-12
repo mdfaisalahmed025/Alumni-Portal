@@ -7,9 +7,11 @@ import { University } from './entities/university.entities';
 import { Post } from './entities/Post.entity';
 import { Adress } from './entities/address.enity';
 import { Job } from './entities/job.entity';
+import { Admin } from 'src/admin/entities/admin.entity';
+import { AdminModule } from 'src/admin/admin.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Alumni, University, Post, Job, Adress])],
+  imports: [TypeOrmModule.forFeature([Alumni, University, Post, Job, Adress, Admin]), AdminModule],
   controllers: [AlumniController],
   providers: [AlumniService]
 })
