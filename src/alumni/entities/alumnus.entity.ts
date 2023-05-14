@@ -1,6 +1,5 @@
 import { BeforeInsert, Column, Entity, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { University } from "./university.entities";
-import { Post } from "./Post.entity";
 import { Adress } from "./address.enity";
 
 

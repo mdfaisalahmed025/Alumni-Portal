@@ -1,4 +1,5 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { PostEntity } from "./post.entity";
 
 const crypto = require('crypto');
 const keyKey = 'kapjhapkappa';
@@ -28,4 +29,6 @@ export class Admin {
     PhoneNumber: string
     @Column({ default: false })
     isAdmin: boolean;
+    @OneToMany(() => PostEntity, (post) => post.admin)
+    post: PostEntity[]
 }

@@ -1,10 +1,9 @@
 
 
 import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { Alumni } from "./alumnus.entity";
 
 @Entity()
-export class Post {
+export class message {
     @PrimaryGeneratedColumn()
     uuid: string
     @Column()

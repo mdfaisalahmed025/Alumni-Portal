@@ -5,11 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlumniModule } from './alumni/alumni.module';
 import { Alumni } from './alumni/entities/alumnus.entity';
 import { University } from './alumni/entities/university.entities';
-import { Post } from './alumni/entities/Post.entity';
+import { message } from './alumni/entities/message.entity';
 import { Adress } from './alumni/entities/address.enity';
 import { Job } from './alumni/entities/job.entity';
 import { AdminModule } from './admin/admin.module';
 import { Admin } from 'typeorm';
+import { PostEntity } from './admin/entities/post.entity';
 
 @Module({
   imports: [
@@ -21,12 +22,13 @@ import { Admin } from 'typeorm';
       database: 'alumniportal',
       port: 3306,
       autoLoadEntities: true,
-      synchronize:true,
+      synchronize: true,
       entities: [
         Admin,
+        PostEntity,
         Alumni,
         University,
-        Post,
+      message,
         Adress,
         Job
 
