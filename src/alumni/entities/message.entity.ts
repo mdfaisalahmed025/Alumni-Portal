@@ -1,6 +1,7 @@
 
 
 import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Alumni } from "./alumnus.entity";
 
 @Entity()
 export class message {
@@ -13,6 +14,6 @@ export class message {
     @CreateDateColumn()
     @Column()
     Date: string
-    // @ManyToOne(()=>Alumni, (alumni)=>alumni.post)
-    // alumni:Alumni
+    @ManyToOne(() => Alumni, (alumni) => alumni.post)
+    alumni: Alumni
 }

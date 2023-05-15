@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, Entity, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { University } from "./university.entities";
 import { Adress } from "./address.enity";
+import { message } from "./message.entity";
 
 
 const crypto = require('crypto');
@@ -45,8 +46,8 @@ export class Alumni {
     status: AccountStatus;
     @OneToOne(() => University, (university) => university.alumni)
     university: University
-    // @OneToMany(() => Post, (post) => post.alumni)
-    // post: Post[]
+    @OneToMany(() => message, (post) => post.alumni)
+    post: message[]
     // @OneToOne(() => Adress)
     // adress: Adress
 

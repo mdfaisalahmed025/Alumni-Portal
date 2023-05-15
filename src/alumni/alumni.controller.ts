@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, HttpStatus, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, HttpStatus, UnauthorizedException, NotFoundException, BadRequestException, HttpException } from '@nestjs/common';
 import { AlumniService } from './alumni.service';
 import { CreateAlumnusDto } from './dto/create-alumnus.dto';
 import { UpdateAlumnusDto } from './dto/update-alumnus.dto';
@@ -7,12 +7,14 @@ import { AccountStatus, Alumni } from './entities/alumnus.entity';
 import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 import { Admin } from 'src/admin/entities/admin.entity';
+import { message } from './entities/message.entity';
 
 @Controller('alumni')
 export class AlumniController {
   constructor(
     @InjectRepository(Alumni) private alumniRepository: Repository<Alumni>,
     @InjectRepository(Admin) private AdminRepository: Repository<Admin>,
+    @InjectRepository(message) private messageRepository: Repository<message>,
     private readonly alumniService: AlumniService) { }
 
   @Post('registration')
@@ -80,6 +82,45 @@ export class AlumniController {
     alumni.status = AccountStatus.Verified
     await this.alumniRepository.save(alumni);
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'account verified successfully' });
+  }
+
+  @Post(':AlumniId/postmessage')
+  async createMessage(
+    @Param('uuid') uuid: string,
+    @Req() req: Request,
+    @Res() res: Response,
+
+    @Body() body
+  ) {
+    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
+    if (!alumni) {
+      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
+    }
+    const { Title, Body, Date } = req.body
+    const post = new message()
+    post.Title = Title
+    post.Body = Body
+    post.alumni = alumni
+    await this.messageRepository.save({ ...post, alumni })
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Message Created successfully' });
+  }
+
+
+  @Get(':uuid/allmessage')
+  async FindAllmessage(
+    @Param('uuid') uuid: string) {
+    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
+    if (!alumni) {
+      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
+    }
+    const posts = await this.messageRepository.find({ where: {} })
+    if (!posts) {
+      throw new HttpException(
+        `post not found with this`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return posts
   }
 
 
