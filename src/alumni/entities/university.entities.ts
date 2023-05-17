@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AlumniModule } from "../alumni.module";
 import { Alumni } from "./alumnus.entity";
 
@@ -13,8 +13,7 @@ export class University {
     Department: string
     @Column()
     City: string
-    university: University
-    @OneToOne(() => Alumni, (alumni) => alumni.university)
+    @ManyToOne(() => Alumni, (alumni) => alumni.university)
     alumni: Alumni
 
 }

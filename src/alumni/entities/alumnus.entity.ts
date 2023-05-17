@@ -2,6 +2,7 @@ import { BeforeInsert, Column, Entity, OneToMany, OneToOne, PrimaryColumn, Prima
 import { University } from "./university.entities";
 import { Adress } from "./address.enity";
 import { message } from "./message.entity";
+import { Job } from "./job.entity";
 
 
 const crypto = require('crypto');
@@ -44,11 +45,13 @@ export class Alumni {
     EducationStatus: string
     @Column({ type: 'enum', enum: AccountStatus, default: AccountStatus.NotVerified })
     status: AccountStatus;
-    @OneToOne(() => University, (university) => university.alumni)
+    @OneToMany(() => University, (university) => university.alumni)
     university: University
     @OneToMany(() => message, (post) => post.alumni)
     post: message[]
-    // @OneToOne(() => Adress)
-    // adress: Adress
+    @OneToMany(() => Adress, (adress)=>adress.alumni)
+    adress: Adress
+    @OneToMany(() => Job, (job) => job.alumni)
+    job: Job
 
 }

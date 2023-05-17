@@ -8,6 +8,9 @@ import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 import { Admin } from 'src/admin/entities/admin.entity';
 import { message } from './entities/message.entity';
+import { University } from './entities/university.entities';
+import { Adress } from './entities/address.enity';
+import { Job } from './entities/job.entity';
 
 @Controller('alumni')
 export class AlumniController {
@@ -15,6 +18,9 @@ export class AlumniController {
     @InjectRepository(Alumni) private alumniRepository: Repository<Alumni>,
     @InjectRepository(Admin) private AdminRepository: Repository<Admin>,
     @InjectRepository(message) private messageRepository: Repository<message>,
+    @InjectRepository(University) private universityRepository: Repository<University>,
+    @InjectRepository(Adress) private AdressRepository: Repository<Adress>,
+    @InjectRepository(Job) private JobRepository: Repository<Job>,
     private readonly alumniService: AlumniService) { }
 
   @Post('registration')
@@ -122,6 +128,132 @@ export class AlumniController {
     }
     return posts
   }
+
+
+  @Post(':AlumniId/adduniversity')
+  async Adduniversity(
+    @Param('uuid') uuid: string,
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body
+  ) {
+    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
+    if (!alumni) {
+      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
+    }
+    const { Department, City, Name, } = req.body
+    const university = new University()
+    university.Name = Name
+    university.City = City
+    university.Department = Department
+    university.alumni = alumni
+    await this.universityRepository.save({ ...university, alumni })
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'University Added successfully' });
+  }
+
+
+
+  @Get(':uuid/myuniversity')
+  async FindUniversity(
+    @Param('uuid') uuid: string) {
+    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
+    if (!alumni) {
+      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
+    }
+    const university = await this.universityRepository.find({ where: {} })
+    if (!university) {
+      throw new HttpException(
+        `university not found with this`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return university
+  }
+
+
+  @Post(':AlumniId/addAdresss')
+  async AddAdress(
+    @Param('uuid') uuid: string,
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body
+  ) {
+    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
+    if (!alumni) {
+      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
+    }
+    const { Country, ZipCode, City, } = req.body
+    const address = new Adress()
+    address.ZipCode = ZipCode
+    address.City = City
+    address.Country = Country
+    address.alumni = alumni
+    await this.AdressRepository.save({ ...address, alumni })
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Adress Added successfully' });
+  }
+
+
+
+  @Get(':uuid/MyAdress')
+  async MyAdress(
+    @Param('uuid') uuid: string) {
+    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
+    if (!alumni) {
+      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
+    }
+    const adress = await this.AdressRepository.find({ where: {} })
+    if (!adress) {
+      throw new HttpException(
+        `adress not found with this`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return adress
+  }
+
+
+
+  @Post(':AlumniId/PostJob')
+  async PostJob(
+    @Param('uuid') uuid: string,
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body
+  ) {
+    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
+    if (!alumni) {
+      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
+    }
+    const { City, CompanyName, Designation } = req.body
+    const job = new Job()
+    job.Designation = Designation
+    job.CompanyName = CompanyName
+    job.City = City
+    job.alumni = alumni
+    await this.JobRepository.save({ ...job, alumni })
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Adress Added successfully' });
+  }
+
+
+
+  @Get(':uuid/mypost')
+  async mypost(
+    @Param('uuid') uuid: string) {
+    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
+    if (!alumni) {
+      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
+    }
+    const job = await this.JobRepository.find({ where: {} })
+    if (!job) {
+      throw new HttpException(
+        `adress not found with this`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return job
+  }
+
+
 
 
 

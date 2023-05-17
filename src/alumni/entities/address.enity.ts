@@ -1,15 +1,20 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Alumni } from "./alumnus.entity";
 
 
-export class Adress{
+@Entity()
+export class Adress {
     @PrimaryGeneratedColumn('uuid')
-    uuid:string
+    uuid: string
     @Column()
-    City:string
+    City: string
     @Column()
-    ZipCode:string
+    ZipCode: string
     @Column()
-    Country:string
-    
+    Country: string
+    @ManyToOne(() => Alumni, (alumni) => alumni.adress)
+    alumni: Alumni
+
+
 
 }
