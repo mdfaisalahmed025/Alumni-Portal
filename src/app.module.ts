@@ -17,10 +17,10 @@ import { PostEntity } from './admin/entities/post.entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       username: "root",
-      password: "",
-      host: "127.0.0.1",
-      database: 'alumniportal',
-      port: 3306,
+      password: "ukN92K5xnZ1eeV4OVzgc",
+      host: "containers-us-west-132.railway.app",
+      database: 'railway',
+      port: 7228,
       autoLoadEntities: true,
       synchronize: true,
       entities: [
