@@ -33,7 +33,7 @@ export class Alumni {
     LastName: string
     @Column()
     Email: string
-    @Column()
+    @Column({default:null})
     Password: string
     @Column()
     StudentId: string
