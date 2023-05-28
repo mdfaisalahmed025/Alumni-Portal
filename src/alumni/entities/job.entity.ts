@@ -6,7 +6,7 @@ import { Alumni } from "./alumnus.entity";
 export class Job{
     @PrimaryGeneratedColumn()
     jobid:string
-    @Column()
+    @Column({default:null})
     Designation:string
     @Column()
     CompanyName:string
