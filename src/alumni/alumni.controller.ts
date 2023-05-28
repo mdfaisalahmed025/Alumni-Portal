@@ -211,7 +211,6 @@ export class AlumniController {
   }
 
 
-
   @Post('/PostJob/:uuid')
   async PostJob(
     @Param('uuid') uuid: string,
@@ -253,9 +252,9 @@ export class AlumniController {
   }
 
 
-  @Get('matchjob')
+  @Get(':uuid/matchjob')
   async getAlumniWithMatchingProfileAndJobs(
-    uuid: string,): Promise<Alumni[]> {
+    @Param('uuid') uuid: string,): Promise<Alumni[]> {
 
     const alumni = await this.alumniRepository.find({
       where: { uuid }, relations: ["address", "university", "department"],
