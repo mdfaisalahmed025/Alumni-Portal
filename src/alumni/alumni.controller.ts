@@ -212,7 +212,7 @@ export class AlumniController {
 
 
 
-  @Post(':AlumniId/PostJob')
+  @Post('/PostJob/:uuid')
   async PostJob(
     @Param('uuid') uuid: string,
     @Req() req: Request,
