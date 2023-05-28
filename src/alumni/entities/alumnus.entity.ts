@@ -49,7 +49,7 @@ export class Alumni {
     university: University
     @OneToMany(() => message, (post) => post.alumni)
     post: message[]
-    @OneToMany(() => Adress, (adress)=>adress.alumni)
+    @OneToMany(() => Adress, (adress) => adress.alumni)
     adress: Adress
     @OneToMany(() => Job, (job) => job.alumni)
     job: Job

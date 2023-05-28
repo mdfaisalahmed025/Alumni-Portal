@@ -9,18 +9,18 @@ import { message } from './alumni/entities/message.entity';
 import { Adress } from './alumni/entities/address.enity';
 import { Job } from './alumni/entities/job.entity';
 import { AdminModule } from './admin/admin.module';
-import { Admin } from 'typeorm';
 import { PostEntity } from './admin/entities/post.entity';
+import { Admin } from './admin/entities/admin.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
       username: "root",
-      password: "ukN92K5xnZ1eeV4OVzgc",
-      host: "containers-us-west-132.railway.app",
+      password: "j1lOMRLF9RzEN3pnJbaq",
+      host: "containers-us-west-102.railway.app",
       database: 'railway',
-      port: 7228,
+      port: 6091,
       autoLoadEntities: true,
       synchronize: true,
       entities: [
@@ -28,7 +28,7 @@ import { PostEntity } from './admin/entities/post.entity';
         PostEntity,
         Alumni,
         University,
-      message,
+        message,
         Adress,
         Job
 
