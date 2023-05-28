@@ -12,7 +12,7 @@ export class Adress {
     ZipCode: string
     @Column()
     Country: string
-    @ManyToOne(() => Alumni, (alumni) => alumni.adress)
+    @ManyToOne(() => Alumni, (alumni) => alumni.address)
     alumni: Alumni
 
 

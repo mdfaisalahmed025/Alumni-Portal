@@ -257,7 +257,7 @@ export class AlumniController {
     @Param('uuid') uuid: string,): Promise<Alumni[]> {
 
     const alumni = await this.alumniRepository.find({
-      where: { uuid }, relations: ["address", "university", "department"],
+      where: { uuid }, relations: ["address", "university"],
 
     });
 
@@ -267,7 +267,7 @@ export class AlumniController {
 
     const matchingAlumni = await this.alumniRepository.find({
       where: {},
-      relations: ["address", "university", "department", "jobPosts"],
+      relations: ["address", "university", "job"],
     });
 
     const alumniWithJobs = matchingAlumni.filter(alumni => alumni.job.length > 0);

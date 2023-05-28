@@ -50,7 +50,7 @@ export class Alumni {
     @OneToMany(() => message, (post) => post.alumni)
     post: message[]
     @OneToMany(() => Adress, (adress) => adress.alumni)
-    adress: Adress
+    address: Adress
     @OneToMany(() => Job, (job) => job.alumni)
     job: Job[]
 
