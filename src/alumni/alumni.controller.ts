@@ -257,8 +257,8 @@ export class AlumniController {
 
 
   @Get('allalumni')
-  findAll() {
-    return this.alumniService.findAll();
+  async findAll() {
+    return await this.alumniRepository.find({})
   }
 
   @Get(':id')
