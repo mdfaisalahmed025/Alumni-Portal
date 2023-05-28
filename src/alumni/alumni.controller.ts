@@ -90,7 +90,7 @@ export class AlumniController {
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'account verified successfully' });
   }
 
-  @Post('/:uuid/postmessage')
+  @Post(':uuid/postmessage')
   async createMessage(
     @Param('uuid') uuid: string,
     @Req() req: Request,
@@ -111,7 +111,7 @@ export class AlumniController {
   }
 
 
-  @Get(':uuid/allmessage')
+  @Get('/:uuid/allmessage')
   async FindAllmessage(
     @Param('uuid') uuid: string) {
     const alumni = await this.alumniRepository.findOne({ where: { uuid } });

@@ -7,11 +7,11 @@ import { Alumni } from "./alumnus.entity";
 export class University {
     @PrimaryGeneratedColumn()
     uuid: string
-    @Column()
+    @Column({ default: null })
     Name: string
-    @Column()
+    @Column({ default: null })
     Department: string
-    @Column()
+    @Column({ default: null })
     City: string
     @ManyToOne(() => Alumni, (alumni) => alumni.university)
     alumni: Alumni

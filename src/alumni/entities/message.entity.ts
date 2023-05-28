@@ -7,12 +7,12 @@ import { Alumni } from "./alumnus.entity";
 export class message {
     @PrimaryGeneratedColumn()
     uuid: string
-    @Column()
+    @Column({ default: null })
     Title: string
-    @Column()
+    @Column({ default: null })
     Body: string
     @CreateDateColumn()
-    @Column()
+    @Column({ default: null })
     Date: string
     @ManyToOne(() => Alumni, (alumni) => alumni.post)
     alumni: Alumni
