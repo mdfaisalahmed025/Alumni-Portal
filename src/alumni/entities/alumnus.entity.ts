@@ -52,6 +52,6 @@ export class Alumni {
     @OneToMany(() => Adress, (adress) => adress.alumni)
     adress: Adress
     @OneToMany(() => Job, (job) => job.alumni)
-    job: Job
+    job: Job[]
 
 }

@@ -230,7 +230,7 @@ export class AlumniController {
     job.City = City
     job.alumni = alumni
     await this.JobRepository.save({ ...job, alumni })
-    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Adress Added successfully' });
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Job Post Created successfully' });
   }
 
 
@@ -253,6 +253,27 @@ export class AlumniController {
   }
 
 
+  @Get('matchjob')
+  async getAlumniWithMatchingProfileAndJobs(
+    uuid: string,): Promise<Alumni[]> {
+
+    const alumni = await this.alumniRepository.find({
+      where: { uuid }, relations: ["address", "university", "department"],
+
+    });
+
+    if (!alumni) {
+      throw new Error("Alumni not found");
+    }
+
+    const matchingAlumni = await this.alumniRepository.find({
+      where: {},
+      relations: ["address", "university", "department", "jobPosts"],
+    });
+
+    const alumniWithJobs = matchingAlumni.filter(alumni => alumni.job.length > 0);
+    return alumniWithJobs;
+  }
 
 
 
