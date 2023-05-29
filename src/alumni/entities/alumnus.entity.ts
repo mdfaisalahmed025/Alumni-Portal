@@ -48,7 +48,7 @@ export class Alumni {
         enum: UserRole,
       })
     Role: UserRole;
-    @Column({ type: 'enum' })
+    @Column({ type: 'enum', enum: AccountStatus })
     status: AccountStatus;
     @OneToMany(() => University, (university) => university.alumni)
     university: University
