@@ -62,10 +62,6 @@ export class AlumniController {
     if(Password!==ConfirmedPassword){
       throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
     }
-    const existsuser = await this.alumniRepository.find({where:{uuid}})
-    if(existsuser){
-     throw new HttpException("username already taken", HttpStatus.BAD_REQUEST)
-   }
   
     registration.Role = UserRole.Alumni
     await this.alumniRepository.save({ ...registration })
