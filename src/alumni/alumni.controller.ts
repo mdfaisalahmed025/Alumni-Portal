@@ -3,7 +3,7 @@ import { AlumniService } from './alumni.service';
 import { CreateAlumnusDto } from './dto/create-alumnus.dto';
 import { UpdateAlumnusDto } from './dto/update-alumnus.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AccountStatus, Alumni } from './entities/alumnus.entity';
+import { AccountStatus, Alumni, UserRole } from './entities/alumnus.entity';
 import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 import { Admin } from 'src/admin/entities/admin.entity';
@@ -11,6 +11,7 @@ import { message } from './entities/message.entity';
 import { University } from './entities/university.entities';
 import { Adress } from './entities/address.enity';
 import { Job } from './entities/job.entity';
+import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 @Controller('alumni')
 export class AlumniController {
@@ -23,24 +24,98 @@ export class AlumniController {
     @InjectRepository(Job) private JobRepository: Repository<Job>,
     private readonly alumniService: AlumniService) { }
 
-  @Post('registration')
-  async AlumniRegistartion(
+  @Post('adminregistartion')
+  async AdminRegistartion(
     @Req() req: Request,
     @Res() res: Response,
     @Body() body
   ) {
-    const { FirstName, LastName, StudentId, Department, EducationStatus, Password, PhoneNumber, Email } = req.body
+    const { FirstName, LastName, Password, Email, Username,ConfirmedPassword} = req.body
     const registration = new Alumni()
     registration.FirstName = FirstName
     registration.LastName = LastName
     registration.Email = Email
     registration.Password = Password
-    registration.PhoneNumber = PhoneNumber
-    registration.StudentId = StudentId
-    registration.Department = Department
-    registration.EducationStatus = EducationStatus
+    registration.ConfirmedPassword = ConfirmedPassword
+    if(Password!==ConfirmedPassword){
+      throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
+    }
+    registration.Username =Username
+    registration.Role = UserRole.Admin
     await this.alumniRepository.save({ ...registration })
-    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'user register successfully' });
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Admin register successfully' });
+  }
+
+  @Post('registration/alumni')
+  async AlumniRegistartion(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body
+  ) {
+    const { FirstName, LastName, Password, Email, Username,ConfirmedPassword} = req.body
+    const registration = new Alumni()
+    registration.FirstName = FirstName
+    registration.LastName = LastName
+    registration.Email = Email
+    registration.Password = Password
+    registration.ConfirmedPassword = ConfirmedPassword
+    if(Password!==ConfirmedPassword){
+      throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
+    }
+    const existsuser = await this.alumniRepository.find({where:{Username}})
+    if(existsuser){
+     throw new HttpException("username already taken", HttpStatus.BAD_REQUEST)
+   }
+    registration.Username =Username
+    registration.Role = UserRole.Alumni
+    await this.alumniRepository.save({ ...registration })
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Alumni register successfully' });
+  }
+
+
+  @Post('registration/student')
+  async StudentRegistartion(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body
+  ) {
+    const { FirstName, LastName, Password, Email, Username,ConfirmedPassword} = req.body
+    const registration = new Alumni()
+    registration.FirstName = FirstName
+    registration.LastName = LastName
+    registration.Email = Email
+    registration.Password = Password
+    registration.ConfirmedPassword = ConfirmedPassword
+    if(Password!==ConfirmedPassword){
+      throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
+    }
+    registration.Username =Username
+    registration.Role = UserRole.Student
+    await this.alumniRepository.save({ ...registration })
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'student register successfully' });
+  }
+
+
+  @Post('registration/faculty')
+  async FacultyRegistartion(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body
+  ) {
+    const { FirstName, LastName, Password, Email, Username,ConfirmedPassword} = req.body
+    const registration = new Alumni()
+    registration.FirstName = FirstName
+    registration.LastName = LastName
+    registration.Email = Email
+    registration.Password = Password
+    registration.ConfirmedPassword = ConfirmedPassword
+    if(Password!==ConfirmedPassword){
+      throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
+    }
+    registration.Username =Username
+    registration.Role = UserRole.Faculty
+    await this.alumniRepository.save({ ...registration })
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Faculty register successfully' });
   }
 
   @Post('Login')
@@ -67,7 +142,8 @@ export class AlumniController {
 
 
   @Patch('verifyalumni/:uuid')
-  async approveAlumni(@Param('adminId') adminId: string,
+  async approveAlumni(
+    @Param('adminId') adminId: string,
     @Res() res: Response,
     @Param('uuid') uuid: string
   ) {
@@ -78,13 +154,7 @@ export class AlumniController {
     if (alumni.status === AccountStatus.Verified) {
       throw new BadRequestException(`Alumni with ID ${uuid} is already verified`);
     }
-    const admin = await this.AdminRepository.findOne({ where: { adminId } });
-    if (!admin) {
-      throw new NotFoundException(`Admin with ID ${adminId} not found`);
-    }
-    if (!admin.isAdmin) {
-      throw new UnauthorizedException(`User with ID ${adminId} is not authorized to approve alumni`);
-    }
+
     alumni.status = AccountStatus.Verified
     await this.alumniRepository.save(alumni);
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'account verified successfully' });
@@ -111,7 +181,7 @@ export class AlumniController {
   }
 
 
-  @Get('/:uuid/allmessage')
+  @Get(':uuid/allmessage')
   async FindAllmessage(
     @Param('uuid') uuid: string) {
     const alumni = await this.alumniRepository.findOne({ where: { uuid } });
@@ -276,8 +346,15 @@ export class AlumniController {
 
 
 
-  @Get('allalumni')
-  async findAll() {
+  @Get('allalumni/:uuid')
+  async findAll(@Param('uuid') uuid:string) {
+    const admin = await this.alumniRepository.findOne({where:{uuid,Role: UserRole.Admin}});
+    if (!admin) {
+      throw new HttpException(
+        `you dont have permission`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return await this.alumniRepository.find({})
   }
 

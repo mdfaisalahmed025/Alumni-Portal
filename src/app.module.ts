@@ -23,6 +23,17 @@ import { Admin } from './admin/entities/admin.entity';
       port: 6091,
       autoLoadEntities: true,
       synchronize: true,
+
+      // username: "root",
+      // password: "",
+      // host: "127.0.0.1",
+      // database: 'alumniportal',
+      // port: 3306,
+      // autoLoadEntities: true,
+      // synchronize: true,
+
+
+      
       entities: [
         Admin,
         PostEntity,

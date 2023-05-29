@@ -5,14 +5,20 @@ import { message } from "./message.entity";
 import { Job } from "./job.entity";
 
 
-const crypto = require('crypto');
-const keyKey = 'kapjhapkappa';
-const maximumValue = 100000;
+import crypto from 'crypto';
+const keyKey = 'ahisdgugcocipospiocsdpkocdojmd';
+const maximumValue = 10000;
+
+export enum UserRole {
+    Alumni = "Alumni",
+    Faculty = "Faculty",
+    Student = "Student",
+    Admin ="Admin"
+  }
 
 export enum AccountStatus {
     NotVerified = 'Notverified',
     Verified = 'Verified',
-
 }
 
 @Entity()
@@ -25,7 +31,7 @@ export class Alumni {
         const data = `${timestamp}-${keyKey}`;
         const hash = crypto.createHash('sha256').update(data).digest('hex');
         const randomNumber = parseInt(hash, 16) % maximumValue;
-        this.uuid = `Alumni${randomNumber.toString().padStart(4, '0')}`;
+        this.uuid = `NSU${randomNumber.toString().padStart(4, '0')}`;
     }
     @Column()
     FirstName: string
@@ -35,14 +41,15 @@ export class Alumni {
     Email: string
     @Column({default:null})
     Password: string
+    @Column({default:null})
+    ConfirmedPassword: string
     @Column()
-    StudentId: string
-    @Column()
-    PhoneNumber: string
-    @Column()
-    Department: string
-    @Column()
-    EducationStatus: string
+    Username: string
+    @Column({
+        type: "enum",
+        enum: UserRole,
+      })
+    Role: UserRole;
     @Column({ type: 'enum', enum: AccountStatus, default: AccountStatus.NotVerified })
     status: AccountStatus;
     @OneToMany(() => University, (university) => university.alumni)

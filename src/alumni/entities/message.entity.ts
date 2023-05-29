@@ -12,8 +12,7 @@ export class message {
     @Column({ default: null })
     Body: string
     @CreateDateColumn()
-    @Column({ default: null })
-    Date: string
+    Date: Date
     @ManyToOne(() => Alumni, (alumni) => alumni.post)
     alumni: Alumni
 }
