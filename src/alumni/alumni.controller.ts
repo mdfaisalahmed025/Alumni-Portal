@@ -40,7 +40,6 @@ export class AlumniController {
     if(Password!==ConfirmedPassword){
       throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
     }
-    registration.Username =Username
     registration.Role = UserRole.Admin
     await this.alumniRepository.save({ ...registration })
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Admin register successfully' });
@@ -50,9 +49,10 @@ export class AlumniController {
   async AlumniRegistartion(
     @Req() req: Request,
     @Res() res: Response,
+    uuid:string,
     @Body() body
   ) {
-    const { FirstName, LastName, Password, Email, Username,ConfirmedPassword} = req.body
+    const { FirstName, LastName, Password, Email,ConfirmedPassword} = req.body
     const registration = new Alumni()
     registration.FirstName = FirstName
     registration.LastName = LastName
@@ -62,11 +62,11 @@ export class AlumniController {
     if(Password!==ConfirmedPassword){
       throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
     }
-    const existsuser = await this.alumniRepository.find({where:{Username}})
+    const existsuser = await this.alumniRepository.find({where:{uuid}})
     if(existsuser){
      throw new HttpException("username already taken", HttpStatus.BAD_REQUEST)
    }
-    registration.Username =Username
+  
     registration.Role = UserRole.Alumni
     await this.alumniRepository.save({ ...registration })
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Alumni register successfully' });
@@ -89,7 +89,7 @@ export class AlumniController {
     if(Password!==ConfirmedPassword){
       throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
     }
-    registration.Username =Username
+
     registration.Role = UserRole.Student
     await this.alumniRepository.save({ ...registration })
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'student register successfully' });
@@ -112,7 +112,6 @@ export class AlumniController {
     if(Password!==ConfirmedPassword){
       throw new HttpException("password does not match", HttpStatus.BAD_REQUEST)
     }
-    registration.Username =Username
     registration.Role = UserRole.Faculty
     await this.alumniRepository.save({ ...registration })
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Faculty register successfully' });
@@ -240,7 +239,7 @@ export class AlumniController {
   }
 
 
-  @Post(':AlumniId/addAdresss')
+  @Post(':uuid/addAdresss')
   async AddAdress(
     @Param('uuid') uuid: string,
     @Req() req: Request,
@@ -344,6 +343,19 @@ export class AlumniController {
     return alumniWithJobs;
   }
 
+  
+  @Get('dashboard/:uuid')
+  async getuserdashboard(@Param('uuid') uuid:string) {
+    const alumni = await this.alumniRepository.find({where:{uuid}, relations: ['address', "university", "job"],});
+    if (!alumni) {
+      throw new HttpException(
+        `User Not Found`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return alumni;
+  }
+
 
 
   @Get('allalumni/:uuid')
@@ -357,12 +369,6 @@ export class AlumniController {
     }
     return await this.alumniRepository.find({})
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.alumniService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAlumnusDto: UpdateAlumnusDto) {
     return this.alumniService.update(+id, updateAlumnusDto);

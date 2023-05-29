@@ -43,8 +43,6 @@ export class Alumni {
     Password: string
     @Column({default:null})
     ConfirmedPassword: string
-    @Column()
-    Username: string
     @Column({
         type: "enum",
         enum: UserRole,
@@ -57,7 +55,7 @@ export class Alumni {
     @OneToMany(() => message, (post) => post.alumni)
     post: message[]
     @OneToMany(() => Adress, (adress) => adress.alumni)
-    address: Adress
+    address: Adress[]
     @OneToMany(() => Job, (job) => job.alumni)
     job: Job[]
 
