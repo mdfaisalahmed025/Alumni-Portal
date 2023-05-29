@@ -42,7 +42,6 @@ import { Admin } from './admin/entities/admin.entity';
         message,
         Adress,
         Job
-
       ],
 
     }),
