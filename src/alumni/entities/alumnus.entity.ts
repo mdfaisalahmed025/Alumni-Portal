@@ -16,10 +16,10 @@ export enum UserRole {
     Admin ="Admin"
   }
 
-export enum AccountStatus {
-    NotVerified = 'Notverified',
-    Verified = 'Verified',
-}
+// export enum AccountStatus {
+//     NotVerified = 'Notverified',
+//     Verified = 'Verified',
+// }
 
 @Entity()
 export class Alumni {
@@ -48,8 +48,8 @@ export class Alumni {
         enum: UserRole,
       })
     Role: UserRole;
-    @Column({ type: 'enum', enum: AccountStatus })
-    status: AccountStatus;
+    // @Column({ type: 'enum', enum: AccountStatus })
+    // status: AccountStatus;
     @OneToMany(() => University, (university) => university.alumni)
     university: University
     @OneToMany(() => message, (post) => post.alumni)

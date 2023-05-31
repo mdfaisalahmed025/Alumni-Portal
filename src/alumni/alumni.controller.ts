@@ -3,7 +3,7 @@ import { AlumniService } from './alumni.service';
 import { CreateAlumnusDto } from './dto/create-alumnus.dto';
 import { UpdateAlumnusDto } from './dto/update-alumnus.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AccountStatus, Alumni, UserRole } from './entities/alumnus.entity';
+import { Alumni, UserRole } from './entities/alumnus.entity';
 import { Repository } from 'typeorm';
 import { Request, Response } from 'express';
 import { Admin } from 'src/admin/entities/admin.entity';
@@ -129,9 +129,6 @@ export class AlumniController {
     if (alumni.Password !== Password) {
       throw new UnauthorizedException('Invalid password');
     }
-    if (alumni.status == AccountStatus.NotVerified) {
-      throw new UnauthorizedException('Account is not verified yet');
-    }
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'login successfully' });
   }
 
@@ -146,11 +143,8 @@ export class AlumniController {
     if (!alumni) {
       throw new NotFoundException(`Alumni with ID ${uuid} not found`);
     }
-    if (alumni.status === AccountStatus.Verified) {
-      throw new BadRequestException(`Alumni with ID ${uuid} is already verified`);
-    }
 
-    alumni.status = AccountStatus.Verified
+
     await this.alumniRepository.save(alumni);
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'account verified successfully' });
   }
