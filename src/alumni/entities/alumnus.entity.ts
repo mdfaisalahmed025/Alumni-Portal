@@ -10,27 +10,27 @@ import { Job } from "./job.entity";
 export class Alumni {
     @PrimaryGeneratedColumn('uuid')
     uuid: string
-    @Column()
+    @Column({default:null})
     FirstName: string
-    @Column()
+    @Column({default:null})
     LastName: string
-    @Column()
+    @Column({default:null})
     Email: string
-    @Column()
+    @Column({default:null})
     Password: string
     @Column({default:null})
     StudentId: string
-    @Column()
+    @Column({default:null})
     PhoneNumber: string
-    @Column()
+    @Column({default:null})
     Department: string
-    @Column()
+    @Column({default:null})
     EducationStatus: string
     @Column()
     UniversityName: string
-    @Column()
+    @Column({default:null})
     City: string
-    @Column()
+    @Column({default:null})
     Country: string
 
     // @Column()
