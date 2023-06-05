@@ -12,8 +12,8 @@ export class Adress {
     ZipCode: string
     @Column()
     Country: string
-    @ManyToOne(() => Alumni, (alumni) => alumni.address)
-    alumni: Alumni
+    // @ManyToOne(() => Alumni, (alumni) => alumni.adress)
+    // alumni: Alumni
 
 
 
