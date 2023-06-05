@@ -278,6 +278,18 @@ export class AlumniController {
     return alumni
   }
 
+
+  @Get('allalumni')
+  async allalumni() {
+    const alumni = await this.alumniRepository.findOne({ where: { },relations:['job']});
+    if (!alumni) {
+      throw new NotFoundException(`Alumni not found`);
+    }
+
+    return alumni
+  }
+
+
   @Get('/match/:uuid')
   async findMatchingJobs(uuid:string): Promise<Job[]> {
     const alumni = await this.alumniRepository.findOne({ where: { uuid } });
