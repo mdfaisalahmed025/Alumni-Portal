@@ -18,7 +18,7 @@ export class Alumni {
     Email: string
     @Column()
     Password: string
-    @Column()
+    @Column({default:null})
     StudentId: string
     @Column()
     PhoneNumber: string
