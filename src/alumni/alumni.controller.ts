@@ -145,6 +145,24 @@ export class AlumniController {
   }
 
 
+  
+  @Get('allmessage')
+  async Allmessage(
+    ) {
+    const posts = await this.messageRepository.find({ where: {} })
+    if (!posts) {
+      throw new HttpException(
+        `post not found with this`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return posts
+  }
+
+
+
+
+
   @Get(':uuid/allmessage')
   async FindAllmessage(
     @Param('uuid') uuid: string) {
