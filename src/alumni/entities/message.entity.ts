@@ -8,6 +8,8 @@ export class message {
     @PrimaryGeneratedColumn()
     uuid: string
     @Column()
+    Name: string
+    @Column()
     Title: string
     @Column()
     Body: string

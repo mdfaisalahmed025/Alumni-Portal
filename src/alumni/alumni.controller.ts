@@ -122,7 +122,7 @@ export class AlumniController {
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'account verified successfully' });
   }
 
-  @Post(':AlumniId/postmessage')
+  @Post(':uuid/postmessage')
   async createMessage(
     @Param('uuid') uuid: string,
     @Req() req: Request,
@@ -134,8 +134,9 @@ export class AlumniController {
     if (!alumni) {
       throw new NotFoundException(`Alumni with ID ${uuid} not found`);
     }
-    const { Title, Body, Date } = req.body
+    const { Title, Body } = req.body
     const post = new message()
+    post.Name = alumni.FirstName
     post.Title = Title
     post.Body = Body
     post.alumni = alumni
