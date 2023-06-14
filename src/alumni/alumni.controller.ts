@@ -30,11 +30,11 @@ export class AlumniController {
     @Res() res: Response,
     @Body() body
   ) {
-    const { FirstName, LastName, StudentId, Department, EducationStatus, Password, UniversityName,PhoneNumber, Email,Country ,City} = req.body
-    const existingUser = await this.alumniRepository.findOne({ where:{Email} });
-  if (existingUser) {
-    return res.status(HttpStatus.BAD_REQUEST).json({ status: "error", message: 'User already exists' });
-  }
+    const { FirstName, LastName, StudentId, Department, EducationStatus, Password, UniversityName, PhoneNumber, Email, Country, City } = req.body
+    const existingUser = await this.alumniRepository.findOne({ where: { Email } });
+    if (existingUser) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ status: "error", message: 'User already exists' });
+    }
 
     const registration = new Alumni()
     registration.FirstName = FirstName
@@ -46,10 +46,10 @@ export class AlumniController {
     registration.Department = Department
     registration.EducationStatus = EducationStatus
     registration.City = City
-    registration.Country=Country
+    registration.Country = Country
     registration.UniversityName = UniversityName
     await this.alumniRepository.save({ ...registration })
-    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'user register successfully' });
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'user register successfully', Email: Email });
   }
 
 
@@ -60,7 +60,7 @@ export class AlumniController {
     @Res() res: Response,
     @Body() body
   ) {
-    const { FirstName, LastName, StudentId, Department, EducationStatus, Password, UniversityName,PhoneNumber, Email,Country ,City} = req.body
+    const { FirstName, LastName, StudentId, Department, EducationStatus, Password, UniversityName, PhoneNumber, Email, Country, City } = req.body
     const alumni = await this.alumniRepository.findOne({ where: { uuid } })
     if (!alumni) {
       throw new UnauthorizedException('Invalid email');
@@ -75,9 +75,9 @@ export class AlumniController {
     alumni.Department = Department
     alumni.EducationStatus = EducationStatus
     alumni.City = City
-    alumni.Country=Country
+    alumni.Country = Country
     alumni.UniversityName = UniversityName
-    await this.alumniRepository.update({uuid},{ ...alumni })
+    await this.alumniRepository.update({ uuid }, { ...alumni })
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'user update successfully' });
   }
 
@@ -88,7 +88,7 @@ export class AlumniController {
     @Res() res: Response,
     @Body('Email') Email: string,
     @Body('Password') Password: string,
-    ) {
+  ) {
 
     const alumni = await this.alumniRepository.findOne({ where: { Email } })
     if (!alumni) {
@@ -110,7 +110,7 @@ export class AlumniController {
     if (!alumni) {
       throw new NotFoundException(`Alumni with ID ${uuid} not found`);
     }
-  
+
     const admin = await this.AdminRepository.findOne({ where: { adminId } });
     if (!admin) {
       throw new NotFoundException(`Admin with ID ${adminId} not found`);
@@ -145,10 +145,10 @@ export class AlumniController {
   }
 
 
-  
+
   @Get('allmessage')
   async Allmessage(
-    ) {
+  ) {
     const posts = await this.messageRepository.find({ where: {} })
     if (!posts) {
       throw new HttpException(
@@ -274,9 +274,9 @@ export class AlumniController {
     if (!alumni) {
       throw new NotFoundException(`Alumni with ID ${uuid} not found`);
     }
-    const { City, CompanyName, Designation,Title } = req.body
+    const { City, CompanyName, Designation, Title } = req.body
     const job = new Job()
-    job.Title =Title
+    job.Title = Title
     job.Designation = Designation
     job.CompanyName = CompanyName
     job.City = City
@@ -289,7 +289,7 @@ export class AlumniController {
   @Get('/dashboard/:uuid')
   async MyProfile(
     @Param('uuid') uuid: string) {
-    const alumni = await this.alumniRepository.findOne({ where: { uuid }, relations:['job'] });
+    const alumni = await this.alumniRepository.findOne({ where: { uuid }, relations: ['job'] });
     if (!alumni) {
       throw new NotFoundException(`Alumni with ID ${uuid} not found`);
     }
@@ -300,7 +300,7 @@ export class AlumniController {
 
   @Get('allalumni')
   async allalumni() {
-    const alumni = await this.alumniRepository.findOne({ where: { },relations:['job']});
+    const alumni = await this.alumniRepository.findOne({ where: {}, relations: ['job'] });
     if (!alumni) {
       throw new NotFoundException(`Alumni not found`);
     }
@@ -310,7 +310,7 @@ export class AlumniController {
 
 
   @Get('/match/:uuid')
-  async findMatchingJobs(uuid:string): Promise<Job[]> {
+  async findMatchingJobs(uuid: string): Promise<Job[]> {
     const alumni = await this.alumniRepository.findOne({ where: { uuid } });
     if (!alumni) {
       throw new NotFoundException(`Alumni with ID ${uuid} not found`);
@@ -320,7 +320,7 @@ export class AlumniController {
     }
     const matchingJobs = await this.JobRepository
       .createQueryBuilder('jobPost')
-      .where('jobPost.Title = :Title', { Title:title })
+      .where('jobPost.Title = :Title', { Title: title })
       .andWhere('jobPost.Designation = :Designation')
       .getMany();
 
@@ -345,27 +345,27 @@ export class AlumniController {
     }
     return job
   }
-  
+
 
 
 
   @Get('myjobs')
- async findMatchin(@Query() alumni:Alumni): Promise<Job[]> {
-  const matchingJobs = await this.JobRepository
-    .createQueryBuilder('job')
-    .leftJoin('job.alumni', 'alumni')
-    .where('alumni.uuid = :uuid', { uuid: alumni.uuid })
-    // .andWhere('job.alumniUuid = :alumniid', { alumniid:alumni.uuid})
-    .orWhere('alumni.City = :city', { city: alumni.City })
-    .orWhere('alumni.Country = :country', { country: alumni.Country })
-    .orWhere('alumni.UniversityName = :university', { university: alumni.UniversityName })
-    .getMany();
-    
-  if (matchingJobs.length === 0) {
-    throw new NotFoundException('No matching jobs found');
+  async findMatchin(@Query() alumni: Alumni): Promise<Job[]> {
+    const matchingJobs = await this.JobRepository
+      .createQueryBuilder('job')
+      .leftJoin('job.alumni', 'alumni')
+      .where('alumni.uuid = :uuid', { uuid: alumni.uuid })
+      // .andWhere('job.alumniUuid = :alumniid', { alumniid:alumni.uuid})
+      .orWhere('alumni.City = :city', { city: alumni.City })
+      .orWhere('alumni.Country = :country', { country: alumni.Country })
+      .orWhere('alumni.UniversityName = :university', { university: alumni.UniversityName })
+      .getMany();
+
+    if (matchingJobs.length === 0) {
+      throw new NotFoundException('No matching jobs found');
+    }
+    return matchingJobs;
   }
-  return matchingJobs;
-}
 
 
 
@@ -374,15 +374,15 @@ export class AlumniController {
 
 
   @Get('/job/all')
- async findAll() {
-   return await this.JobRepository.find({}) 
+  async findAll() {
+    return await this.JobRepository.find({})
   }
 
   @Delete('/delete/:uuid')
- async remove(
-  @Param('uuid') uuid: string,
-  @Req() req: Request,
-  @Res() res: Response,
+  async remove(
+    @Param('uuid') uuid: string,
+    @Req() req: Request,
+    @Res() res: Response,
   ) {
 
     await this.alumniRepository.delete(uuid);

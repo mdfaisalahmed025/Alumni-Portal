@@ -33,7 +33,7 @@ import { Admin } from './admin/entities/admin.entity';
       // database: 'alumniportal',
       // port: 3306,
       // autoLoadEntities: true,
-      // synchronize: true,
+      synchronize: false,
 
 
 
