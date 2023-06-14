@@ -97,7 +97,7 @@ export class AlumniController {
     if (alumni.Password !== Password) {
       throw new UnauthorizedException('Invalid password');
     }
-    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'login successfully' });
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'login successfully', Email: alumni.Email });
   }
 
 
