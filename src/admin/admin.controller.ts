@@ -34,6 +34,25 @@ export class AdminController {
   }
 
 
+  @Post('Login')
+  async Login(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body('Email') Email: string,
+    @Body('Password') Password: string,
+  ) {
+
+    const alumni = await this.AdminRepository.findOne({ where: { Email } })
+    if (!alumni) {
+      throw new UnauthorizedException('sorrry you are not admin');
+    }
+    if (alumni.Password !== Password) {
+      throw new UnauthorizedException('Invalid password');
+    }
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'login successfully' });
+  }
+
+
   @Post(':adminId/createpost')
   async createCurrentAffairs(
     @Param('Admin') adminId: string,
