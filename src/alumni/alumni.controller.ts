@@ -79,7 +79,7 @@ export class AlumniController {
     alumni.Country = Country
     alumni.UniversityName = UniversityName
     await this.alumniRepository.update({ uuid }, { ...alumni })
-    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'user update successfully' });
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'user update successfully', alumni });
   }
 
 
