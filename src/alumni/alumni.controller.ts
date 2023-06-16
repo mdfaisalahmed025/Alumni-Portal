@@ -130,10 +130,11 @@ export class AlumniController {
     @Body() body
   ) {
 
-    const { Title, Body } = req.body
+    const { Title, Body, Name } = req.body
     const post = new message()
     post.Title = Title
     post.Body = Body
+    post.Name = Name
     await this.messageRepository.save({ ...post })
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Message Created successfully' });
   }
