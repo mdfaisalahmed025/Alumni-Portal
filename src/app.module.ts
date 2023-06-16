@@ -17,11 +17,11 @@ import { Admin } from './admin/entities/admin.entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       username: "root",
-      password: "y6uunVCYnjBSjL1ZWaOA",
-      host: "containers-us-west-185.railway.app",
+      password: "hYF49ONrrHOxjVMYyGoh",
+      host: "containers-us-west-43.railway.app",
       database: 'railway',
-      port: 7918,
-      synchronize: false,
+      port: 6817,
+      synchronize: true,
 
       entities: [
         Admin,
