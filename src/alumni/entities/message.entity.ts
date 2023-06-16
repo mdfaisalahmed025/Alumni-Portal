@@ -1,13 +1,13 @@
 
 
-import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Alumni } from "./alumnus.entity";
 
 @Entity()
 export class message {
     @PrimaryGeneratedColumn()
     uuid: string
-    @Column()
+    @Column({ default: null })
     Name: string
     @Column({ default: null })
     Title: string
