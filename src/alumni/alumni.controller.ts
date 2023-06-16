@@ -122,25 +122,18 @@ export class AlumniController {
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'account verified successfully' });
   }
 
-  @Post(':uuid/postmessage')
+  @Post('postmessage')
   async createMessage(
-    @Param('uuid') uuid: string,
     @Req() req: Request,
     @Res() res: Response,
-
     @Body() body
   ) {
-    const alumni = await this.alumniRepository.findOne({ where: { uuid } });
-    if (!alumni) {
-      throw new NotFoundException(`Alumni with ID ${uuid} not found`);
-    }
+
     const { Title, Body } = req.body
     const post = new message()
-    post.Name = alumni.FirstName
     post.Title = Title
     post.Body = Body
-    post.alumni = alumni
-    await this.messageRepository.save({ ...post, alumni })
+    await this.messageRepository.save({ ...post })
     return res.status(HttpStatus.CREATED).json({ status: "success", message: 'Message Created successfully' });
   }
 

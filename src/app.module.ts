@@ -24,16 +24,15 @@ import { Admin } from './admin/entities/admin.entity';
       // username:"flyfarin_fflv2",
       // password: "123Next2$",
       // host: "flyfarint.com",
-      // database:"flyfarin_fflv2",
-      port: 7918,
-      // synchronize:true,
+      // // database:"flyfarin_fflv2",
+      // port: 3306,
+      // synchronize: false,
       // username: "root",
       // password: "",
       // host: "127.0.0.1",
       // database: 'alumniportal',
-      // port: 3306,
-      // autoLoadEntities: true,
-      synchronize: false,
+
+
 
 
 
