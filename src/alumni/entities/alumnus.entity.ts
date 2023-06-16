@@ -34,7 +34,7 @@ export class Alumni {
     Country: string
     @Column({ default: null })
     ConfirmedPassword: string
-    @Column()
+    @Column({ default: null })
     role: string
 
     // @Column()

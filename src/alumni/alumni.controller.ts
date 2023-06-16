@@ -12,6 +12,7 @@ import { Adress } from './entities/address.enity';
 import { Job } from './entities/job.entity';
 import { Alumni } from './entities/alumnus.entity';
 import { title } from 'process';
+import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 @Controller('alumni')
 export class AlumniController {
@@ -53,7 +54,7 @@ export class AlumniController {
   }
 
 
-  @Patch('update/:uuid')
+  @Patch(':update/:uuid')
   async Alumniupdate(
     @Param('uuid') uuid: string,
     @Req() req: Request,
@@ -97,7 +98,7 @@ export class AlumniController {
     if (alumni.Password !== Password) {
       throw new UnauthorizedException('Invalid password');
     }
-    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'login successfully', Email: alumni.Email });
+    return res.status(HttpStatus.CREATED).json({ status: "success", message: 'login successfully', Email: alumni.uuid });
   }
 
 
