@@ -21,6 +21,7 @@ import { Admin } from './admin/entities/admin.entity';
       host: "containers-us-west-185.railway.app",
       database: 'railway',
       port: 7918,
+      synchronize: false,
 
       entities: [
         Admin,

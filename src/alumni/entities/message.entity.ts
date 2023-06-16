@@ -9,13 +9,13 @@ export class message {
     uuid: string
     @Column()
     Name: string
-    @Column()
+    @Column({ default: null })
     Title: string
-    @Column()
+    @Column({ default: null })
     Body: string
     @CreateDateColumn()
     @Column()
     Date: string
-    @ManyToOne(() => Alumni, (alumni) => alumni.post,{onDelete:'CASCADE'})
+    @ManyToOne(() => Alumni, (alumni) => alumni.post, { onDelete: 'CASCADE' })
     alumni: Alumni
 }
