@@ -10,28 +10,32 @@ import { Job } from "./job.entity";
 export class Alumni {
     @PrimaryGeneratedColumn('uuid')
     uuid: string
-    @Column({default:null})
+    @Column({ default: null })
     FirstName: string
-    @Column({default:null})
+    @Column({ default: null })
     LastName: string
-    @Column({default:null})
+    @Column({ default: null })
     Email: string
-    @Column({default:null})
+    @Column({ default: null })
     Password: string
-    @Column({default:null})
+    @Column({ default: null })
     StudentId: string
-    @Column({default:null})
+    @Column({ default: null })
     PhoneNumber: string
-    @Column({default:null})
+    @Column({ default: null })
     Department: string
-    @Column({default:null})
+    @Column({ default: null })
     EducationStatus: string
     @Column()
     UniversityName: string
-    @Column({default:null})
+    @Column({ default: null })
     City: string
-    @Column({default:null})
+    @Column({ default: null })
     Country: string
+    @Column({ default: null })
+    ConfirmedPassword: string
+    @Column()
+    role: string
 
     // @Column()
     // @OneToMany(() => University, (university) => university.alumni)

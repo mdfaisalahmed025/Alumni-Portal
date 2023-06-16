@@ -14,7 +14,7 @@ export class message {
     @Column({ default: null })
     Body: string
     @CreateDateColumn()
-    @Column()
+    @Column({ default: null })
     Date: string
     @ManyToOne(() => Alumni, (alumni) => alumni.post, { onDelete: 'CASCADE' })
     alumni: Alumni
