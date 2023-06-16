@@ -20,6 +20,7 @@ import { Admin } from './admin/entities/admin.entity';
       password: "y6uunVCYnjBSjL1ZWaOA",
       host: "containers-us-west-185.railway.app",
       database: 'railway',
+      port: 7918,
 
       entities: [
         Admin,
